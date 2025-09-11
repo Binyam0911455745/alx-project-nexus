@@ -1,81 +1,225 @@
-# Project Nexus Documentation - ProDev Backend Engineering
+# Project Nexus: Online Poll System Backend
 
-This repository, `alx-project-nexus`, is dedicated to documenting major learnings from the **ProDev Backend Engineering** program. It serves as a comprehensive knowledge hub, showcasing my understanding of backend engineering concepts, tools, and best practices acquired throughout the program.
+This repository, `alx-backend-security`, hosts the backend implementation for an **Online Poll System**, developed as part of the **ProDev Backend Engineering** program's Project Nexus. This project aims to demonstrate proficiency in building robust, scalable, and secure backend systems, focusing on API development for real-time voting, efficient database design, and comprehensive API documentation.
 
-## Project Objective
+## Table of Contents
 
-The primary objectives of this documentation project are to:
+-   [Project Overview](#project-overview)
+-   [Project Goals](#project-goals)
+-   [Key Features](#key-features)
+-   [Technologies Used](#technologies-used)
+-   [Getting Started (Local Development)](#getting-started-local-development)
+    -   [Prerequisites](#prerequisites)
+    -   [Setup Instructions](#setup-instructions)
+    -   [Running the Application](#running-the-application)
+-   [API Documentation (Swagger UI)](#api-documentation-swagger-ui)
+-   [Deployment (PythonAnywhere)](#deployment-pythonanywhere)
+-   [Challenges Faced & Solutions Implemented](#challenges-faced--solutions-implemented)
+-   [Best Practices & Personal Takeaways](#best-practices--personal-takeaways)
+-   [Contributing](#contributing)
+-   [License](#license)
+-   [Collaboration](#collaboration)
 
--   **Consolidate Key Learnings**: Bring together the most impactful knowledge gained from the ProDev Backend Engineering program.
--   **Document Technologies & Concepts**: Detail major backend technologies, core concepts, the challenges encountered, and the solutions implemented.
--   **Serve as a Reference Guide**: Create a valuable resource for both current and future learners in the program.
--   **Foster Collaboration**: Facilitate effective collaboration between frontend and backend learners by clearly outlining the backend architecture and capabilities.
+## Project Overview
 
-## Overview of the ProDev Backend Engineering Program
+This case study focuses on creating a backend for an interactive online poll system. The system provides APIs for users to create polls with multiple options, cast votes, and view real-time results. Emphasis has been placed on designing an efficient database schema capable of handling frequent voting operations and providing detailed, user-friendly API documentation. This project serves as a practical application of core backend engineering principles learned in the ProDev program.
 
-The ProDev Backend Engineering program is an intensive training initiative designed to equip aspiring engineers with the skills necessary to build robust, scalable, and secure backend systems. Throughout the program, we delved into various aspects of backend development, from foundational programming principles to advanced architectural patterns and deployment strategies.
+## Project Goals
 
-## Major Learnings & Key Technologies
+The primary objectives achieved by this backend are:
 
-### Key Technologies Covered:
+-   **API Development**: Build robust RESTful APIs for creating polls, managing poll options, casting votes, and fetching real-time poll results.
+-   **Database Efficiency**: Design a PostgreSQL schema optimized for high-frequency write operations (voting) and efficient real-time result computation.
+-   **User Authentication**: Implement secure JWT-based user authentication for managing access to poll creation and voting.
+-   **Documentation**: Provide comprehensive and interactive API documentation using Swagger/OpenAPI.
 
-* **Python**: The primary programming language used for backend development, emphasizing its versatility, readability, and extensive libraries.
-* **Django**: A high-level Python web framework that encourages rapid development and clean, pragmatic design. (e.g., ORM, Admin Interface, MVT architecture).
-* **Django REST Framework (DRF)**: A powerful and flexible toolkit for building Web APIs on top of Django. (e.g., Serializers, ViewSets, Routers, Authentication).
-* **GraphQL APIs**: An alternative to REST for efficient data fetching, allowing clients to request exactly what they need. (e.g., Queries, Mutations, Subscriptions).
-* **PostgreSQL**: A powerful, open-source object-relational database system, chosen for its robustness, reliability, and performance features.
-* **Docker**: A platform for developing, shipping, and running applications in containers. Learned to containerize Django applications, databases, and Celery for consistent environments.
-* **Celery & RabbitMQ**: Tools for asynchronous task queues. Celery served as the task orchestrator, while RabbitMQ acted as the message broker, enabling background processing, scheduled tasks, and improved responsiveness.
-* **CI/CD Pipelines (GitHub Actions)**: Automated processes for continuous integration and continuous delivery, streamlining the development workflow from code commit to deployment.
+## Key Features
 
-### Important Backend Development Concepts:
+1.  **Poll Management APIs**
+    * Create, retrieve, update, and delete polls.
+    * Each poll can have multiple choices/options.
+    * Polls include metadata like creation date and optional expiry date.
+2.  **Voting System APIs**
+    * Users can cast votes for a specific choice within a poll.
+    * Validations implemented to prevent duplicate voting by the same user on the same poll.
+    * Requires authenticated users.
+3.  **Real-Time Result Computation**
+    * APIs to fetch the current vote counts for each option within a poll.
+    * Efficient query design ensures quick result retrieval even with many votes.
+4.  **User Authentication**
+    * Secure user registration and login using JWT (JSON Web Tokens).
+    * Endpoints for obtaining and refreshing access tokens.
+5.  **Comprehensive API Documentation**
+    * Integrated `drf-yasg` (Swagger/OpenAPI) to automatically generate interactive API documentation.
+    * Documentation is hosted and easily accessible for frontend integration and testing.
 
-* **Database Design & Management**: Principles of relational database design (normalization, relationships), efficient querying, indexing strategies, and database migrations with Django.
-* **API Design Principles (RESTful & GraphQL)**: Understanding principles like statelessness, resource-based URLs, HTTP methods for REST, and schema-driven design for GraphQL.
-* **Authentication & Authorization**: Implementing secure user authentication (e.g., token-based, JWT) and robust authorization (permissions, roles) to protect API endpoints.
-* **Asynchronous Programming & Task Queues**: Leveraging Celery to offload long-running tasks, improve user experience, and manage periodic jobs effectively.
-* **Caching Strategies**: Techniques for improving application performance and reducing database load through caching (e.g., Redis caching).
-* **System Design & Scalability**: Concepts for designing scalable backend systems, including load balancing, microservices (conceptual understanding), and message brokers.
-* **Security Best Practices**: Implementing measures like input validation, sanitization, protecting against common web vulnerabilities (XSS, CSRF), and secure configuration.
-* **Testing (Unit & Integration)**: Writing comprehensive tests for models, views, and API endpoints to ensure code quality and prevent regressions.
+## Technologies Used
+
+* **Backend Framework**: [Django](https://www.djangoproject.com/)
+* **API Framework**: [Django REST Framework (DRF)](https://www.django-rest-framework.org/)
+* **Database**: [PostgreSQL](https://www.postgresql.org/)
+* **Authentication**: [Django REST Framework Simple JWT](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/)
+* **API Documentation**: [DRF-YASG (Swagger/OpenAPI)](https://drf-yasg.readthedocs.io/en/stable/)
+* **Virtual Environment**: `venv` (local), `virtualenv` (PythonAnywhere)
+* **Version Control**: [Git](https://git-scm.com/) / [GitHub](https://github.com/)
+
+## Getting Started (Local Development)
+
+Follow these steps to set up and run the project on your local machine.
+
+### Prerequisites
+
+* Python 3.12+
+* `pip` (Python package installer)
+* `git`
+* PostgreSQL installed and running locally.
+* Redis server installed and running locally (if integrating Celery/caching for future enhancements).
+
+### Setup Instructions
+
+1.  **Clone the Repository**:
+    ```bash
+    git clone [https://github.com/tilahun0911455745/alx-backend-security.git](https://github.com/tilahun0911455745/alx-backend-security.git)
+    cd alx-backend-security
+    ```
+    *(Note: Assuming this is the repository name for your overall Project Nexus.)*
+
+2.  **Create and Activate Virtual Environment**:
+    ```bash
+    python -m venv venv
+    # On Windows:
+    .\venv\Scripts\activate
+    # On macOS/Linux:
+    source venv/bin/activate
+    ```
+
+3.  **Install Dependencies**:
+    ```bash
+    pip install -r requirements.txt
+    # If requirements.txt is not yet generated, install manually:
+    # pip install Django djangorestframework djangorestframework-simplejwt drf-yasg psycopg2-binary
+    ```
+
+4.  **Configure Database**:
+    * Ensure your local PostgreSQL server is running.
+    * Create a new database for the project (e.g., `polldb`).
+    * Update `alx_backend_security/settings.py` with your local PostgreSQL credentials:
+        ```python
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': 'polldb', # Your local DB name
+                'USER': 'your_db_user', # Your local DB user
+                'PASSWORD': 'your_db_password', # Your local DB password
+                'HOST': 'localhost',
+                'PORT': '5432',
+            }
+        }
+        ALLOWED_HOSTS = ['localhost', '127.0.0.1'] # For local testing
+        ```
+
+5.  **Run Migrations**:
+    ```bash
+    python manage.py makemigrations
+    python manage.py migrate
+    ```
+
+6.  **Create a Superuser**:
+    ```bash
+    python manage.py createsuperuser
+    ```
+
+### Running the Application
+
+1.  **Start Django Development Server**:
+    ```bash
+    python manage.py runserver
+    ```
+    The API will be accessible at `http://127.0.0.1:8000/api/`.
+
+## API Documentation (Swagger UI)
+
+Once the server is running, you can access the interactive API documentation at:
+[http://127.0.0.1:8000/swagger/](http://127.0.0.1:8000/swagger/)
+
+This documentation allows you to explore all available endpoints, view expected request/response formats, and directly test the APIs (including authentication using JWT).
+
+## Deployment (PythonAnywhere)
+
+The application is deployed on PythonAnywhere.
+
+**Deployed API Documentation:** [https://tilahun0911455745.pythonanywhere.com/swagger/](https://tilahun0911455745.pythonanywhere.com/swagger/) *(Replace with your actual PythonAnywhere URL)*
+
+**Key Deployment Steps:**
+1.  **Virtual Environment**: Ensure `alx-backend-security-env` is created with Python 3.12.
+2.  **Dependencies**: Install `requirements.txt` into the virtual environment.
+3.  **PythonAnywhere Database Configuration**: Update `DATABASES` in `settings.py` for production:
+    ```python
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'your_pythonanywhere_username$your_db_name', # e.g., tilahun0911455745$polldb
+            'USER': 'your_pythonanywhere_username',
+            'PASSWORD': 'your_db_password_from_pa',
+            'HOST': 'your_pythonanywhere_username.postgresql.pythonanywhere-services.com',
+            'PORT': '5432',
+        }
+    }
+    ALLOWED_HOSTS = ['your_pythonanywhere_username.pythonanywhere.com']
+    ```
+4.  **Web App Configuration**: Set Source code, Working directory to `/home/your_pythonanywhere_username/alx-backend-security`.
+5.  **WSGI File**: Update `wsgi.py` to point to the correct project path and settings module.
+6.  **Static Files**: Configure `/static/` to `/home/your_pythonanywhere_username/alx-backend-security/staticfiles`.
+7.  **Run Migrations & Collect Static**: Via a PythonAnywhere Bash console.
+8.  **Reload Web App**: On the PythonAnywhere Web tab.
 
 ## Challenges Faced & Solutions Implemented
 
-This section details significant hurdles encountered during the program and how they were overcome.
+This section details significant hurdles encountered during the development and deployment of the poll system backend, and how they were overcome.
 
-### Challenge 1: Environment Consistency and Dependency Management
-* **Description**: Initially struggled with ensuring consistent development, testing, and production environments, leading to "works on my machine" issues and dependency conflicts.
-* **Solution Implemented**: Adopted **Docker** for containerization. This involved writing `Dockerfile`s for the Django app, PostgreSQL, and Celery, and orchestrating them with `docker-compose.yml`. This standardized the environment, making deployments much smoother.
+### 1. Environment Inconsistency (Local vs. PythonAnywhere)
+* **Description**: Initial difficulties arose from discrepancies in Python versions and installed packages between my local development environment and the PythonAnywhere server, leading to `ModuleNotFoundError` and unexpected behavior.
+* **Solution Implemented**: Standardized on Python 3.12 for both local development (using `venv`) and PythonAnywhere (creating `alx-backend-security-env` virtualenv). Meticulously updated `requirements.txt` and ensured all dependencies were installed on PythonAnywhere. Correctly configured PythonAnywhere web app to use the specific virtual environment.
 
-### Challenge 2: Handling Long-Running Tasks
-* **Description**: Direct HTTP requests were timing out or blocking the main thread when performing operations like sending emails, processing images, or generating reports.
-* **Solution Implemented**: Integrated **Celery with RabbitMQ** (or Redis as a broker). Configured Celery tasks to run in the background, improving the responsiveness of the web application and enabling scheduled tasks like `detect_suspicious_ips`.
+### 2. Database Connection Issues
+* **Description**: Encountered connection refused errors when trying to link Django to PostgreSQL both locally and on PythonAnywhere.
+* **Solution Implemented**: Locally, ensured PostgreSQL server was actively running and correctly configured `DATABASES` settings with `localhost` and `5432`. For PythonAnywhere, meticulously updated `DATABASES` settings to use the correct hostname and database name format (`username$dbname`) provided by PythonAnywhere's PostgreSQL service.
 
-### Challenge 3: API Performance Optimization
-* **Description**: Certain API endpoints were slow due to repeated database queries or inefficient data retrieval.
-* **Solution Implemented**: Implemented **caching strategies** using Redis. Applied `select_related` and `prefetch_related` in Django ORM to minimize database hits. Also optimized database indexes where appropriate.
+### 3. Securing API Endpoints (Authentication & Authorization)
+* **Description**: Implementing secure yet flexible access control for poll creation and voting required a robust authentication system.
+* **Solution Implemented**: Integrated `djangorestframework-simplejwt` for JWT-based authentication. This provides secure token generation and validation. `permissions.IsAuthenticated` was applied to views requiring user login (e.g., creating polls, voting), while `permissions.IsAuthenticatedOrReadOnly` allowed public viewing of polls and results. Custom validation in `VoteSerializer` prevents duplicate votes.
 
-### Challenge 4: API Documentation and Usability
-* **Description**: Without clear API documentation, frontend developers struggled to integrate with the backend endpoints, leading to communication overhead.
-* **Solution Implemented**: Integrated **DRF-YASG (Swagger/OpenAPI)** into the Django project. This automatically generated interactive API documentation, making it easy for consumers to understand and test endpoints.
+### 4. Real-time Result Computation & Scalability
+* **Description**: Ensuring that poll results are computed efficiently and accurately, especially as the number of votes grows, presented a potential performance bottleneck.
+* **Solution Implemented**: Designed the `Vote` model with `unique_together` constraint to ensure data integrity. Utilized Django's ORM efficiently by leveraging `related_name` in `ForeignKey` relationships to easily count votes (`obj.votes.count()`) directly from `Choice` objects, minimizing complex queries. Future scalability could involve caching or pre-aggregating results with Celery.
 
-*(Add more challenges and solutions here as you progress through your project.)*
+### 5. API Documentation Clarity
+* **Description**: Manually documenting API endpoints is time-consuming and prone to errors, hindering frontend integration.
+* **Solution Implemented**: Integrated `drf-yasg` (Swagger/OpenAPI) into the project. This automatically generates and hosts interactive API documentation at `/swagger/`, providing a clear, up-to-date interface for exploring and testing endpoints directly from the browser, significantly improving developer experience.
 
-## Best Practices and Personal Takeaways
+## Best Practices & Personal Takeaways
 
-* **Test-Driven Development (TDD)**: While not strictly TDD, adopting a testing mindset early significantly improved code reliability and maintainability.
-* **Modularity & Reusability**: Breaking down features into smaller, reusable components (e.g., Django apps, Celery tasks) made the codebase easier to manage and scale.
-* **Version Control Discipline**: Consistent use of Git branches, meaningful commit messages, and regular pushes to GitHub were crucial for collaborative work and tracking progress.
-* **API-First Approach**: Designing API endpoints before implementing the full logic helped clarify requirements and streamline frontend integration.
-* **Logging & Monitoring**: Implementing robust logging in Django and understanding how to monitor application performance (even basic traffic on PythonAnywhere) is vital for production systems.
-* **Continuous Learning**: Backend development is an ever-evolving field; consistently exploring new tools, frameworks, and best practices is essential for growth.
+* **Modular Design**: Structured the project into a dedicated `polls` app, adhering to Django's app structure for better organization and reusability.
+* **Version Control Discipline**: Maintained a clean Git history with descriptive commit messages, facilitating easier tracking of features and fixes.
+* **API-First Approach**: Designed API endpoints and serializers before diving into complex logic, ensuring a clear contract between frontend and backend.
+* **Testing Mindset**: While not full TDD, constantly testing endpoints with Postman/cURL during development helped catch issues early.
+* **Environment Variables (Future Enhancement)**: For production, externalizing sensitive credentials (like database passwords, secret keys) using environment variables would enhance security.
+* **Error Handling**: Implemented custom validation in serializers and handled potential exceptions in views to provide meaningful error messages to API consumers.
+* **Documentation is Key**: The experience reinforced that clear, accessible API documentation (like Swagger) is as crucial as the code itself for collaborative projects.
 
-## Collaboration Hub
+## Contributing
 
-This project emphasizes collaboration, a cornerstone of real-world engineering.
+Feel free to fork this repository, submit pull requests, or open issues if you have suggestions or find bugs.
 
-* **Fellow ProDev Backend Learners**: I actively engaged in discussions, exchanged ideas, and participated in study sessions to deepen understanding and troubleshoot collective challenges.
-* **ProDev Frontend Learners**: Crucially, this backend project is designed with frontend integration in mind. Collaboration with frontend learners is essential to ensure API endpoints meet their needs, facilitate seamless data flow, and collectively build a cohesive full-stack application. Our shared Discord channel `#ProDevProjectNexus` is the primary hub for this synergy.
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
+
+## Collaboration
+
+This project is a product of the **ProDev Backend Engineering** program, emphasizing collaboration.
+
+* **Fellow ProDev Backend Learners**: This repository serves as a resource for exchanging ideas, developing synergies, and organizing study/coding sessions.
+* **ProDev Frontend Learners**: Crucially, this backend provides the API endpoints for frontend applications. Collaboration with frontend learners via the dedicated Discord channel (`#ProDevProjectNexus`) is essential to ensure seamless integration and collective success in building full-stack projects.
 
 ---
-**GitHub Repository**: `alx-project-nexus`
