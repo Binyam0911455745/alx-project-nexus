@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Poll System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <a href="/" class="logo">
+            <img src="https://www.researchgate.net/profile/Habtamu-Demiessie/publication/341216838/figure/fig1/AS:888604419174401@1588871211430/The-Ethiopian-Parliament-is-established-by-547-members-elected-every-five-years.png" alt="PollNexus Logo">
+            PollNexus
+        </a>
+        <nav>
+            <a href="#polls-list">Polls</a>
+            <a href="#create-poll" id="create-poll-link" style="display: none;">Create Poll</a>
+            <a href="/login.html" id="login-link">Login</a>
+            <a href="#" id="logout-link" style="display: none;">Logout</a>
+            <span id="user-info" style="display: none;">Hello, <strong id="username-display"></strong>!</span>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section id="poll-list-section">
+            <h1>Active Polls</h1>
+            <div id="polls-container" class="grid-container">
+                <p id="no-polls-message">Loading polls...</p>
+            </div>
+        </section>
+
+        <section id="poll-detail-section" style="display: none;">
+            </section>
+
+        <section id="create-poll-section" style="display: none;">
+            </section>
+
+        </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 PollNexus. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

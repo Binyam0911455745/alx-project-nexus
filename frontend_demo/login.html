@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PollNexus</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <a href="/" class="logo">PollNexus</a>
+        <nav>
+            <a href="/">Home</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="card" style="max-width: 400px; margin: 40px auto;">
+            <h1>Login</h1>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-username">Username:</label>
+                    <input type="text" id="login-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password:</label>
+                    <input type="password" id="login-password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <div id="login-message" class="error-message"></div>
+            </form>
+            <p style="margin-top: 20px;">Don't have an account? <a href="/register.html">Register here</a></p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 PollNexus. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Inline script for login page specific logic
+        const loginForm = document.getElementById('login-form');
+        const loginMessage = document.getElementById('login-message');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            loginMessage.textContent = ''; // Clear previous messages
+
+            const username = loginForm.elements['username'].value;
+            const password = loginForm.elements['password'].value;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}token/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    setAuthTokens(data.access, data.refresh, username); // Store username too
+                    loginMessage.className = 'success-message';
+                    loginMessage.textContent = 'Login successful! Redirecting...';
+                    setTimeout(() => {
+                        window.location.href = '/'; // Go to homepage
+                    }, 1000);
+                } else {
+                    loginMessage.className = 'error-message';
+                    loginMessage.textContent = data.detail || 'Login failed. Please check your credentials.';
+                }
+            } catch (error) {
+                console.error('Network error during login:', error);
+                loginMessage.className = 'error-message';
+                loginMessage.textContent = 'An error occurred during login.';
+            }
+        });
+
+        // Re-use common utility functions from script.js, or duplicate if login.html is truly standalone
+        // For simplicity, including setAuthTokens directly here
+        function setAuthTokens(access, refresh, username) {
+            localStorage.setItem('authToken', access);
+            localStorage.setItem('refreshToken', refresh);
+            localStorage.setItem('username', username);
+            // No need to update UI here, as we are redirecting
+        }
+        const API_BASE_URL = 'http://127.0.0.1:8000/api/'; // REPLACE!
+    </script>
+</body>
+</html>

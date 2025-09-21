@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - PollNexus</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <a href="/" class="logo">PollNexus</a>
+        <nav>
+            <a href="/">Home</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="card" style="max-width: 400px; margin: 40px auto;">
+            <h1>Register</h1>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-username">Username:</label>
+                    <input type="text" id="register-username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email:</label>
+                    <input type="email" id="register-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password:</label>
+                    <input type="password" id="register-password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password2">Confirm Password:</label>
+                    <input type="password" id="register-password2" name="password2" required>
+                </div>
+                <button type="submit" class="btn">Register</button>
+                <div id="register-message" class="error-message"></div>
+            </form>
+            <p style="margin-top: 20px;">Already have an account? <a href="/login.html">Login here</a></p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 PollNexus. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Inline script for register page specific logic
+        const registerForm = document.getElementById('register-form');
+        const registerMessage = document.getElementById('register-message');
+
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            registerMessage.textContent = ''; // Clear previous messages
+
+            const username = registerForm.elements['username'].value;
+            const email = registerForm.elements['email'].value;
+            const password = registerForm.elements['password'].value;
+            const password2 = registerForm.elements['password2'].value;
+
+            if (password !== password2) {
+                registerMessage.className = 'error-message';
+                registerMessage.textContent = 'Passwords do not match.';
+                return;
+            }
+
+            try {
+                // IMPORTANT: You need a registration endpoint in your Django backend!
+                // For example: `path('api/register/', UserRegistrationView.as_view(), name='register'),`
+                const response = await fetch(`${API_BASE_URL}register/`, { // REPLACE with your actual registration API endpoint
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password, password2 })
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    registerMessage.className = 'success-message';
+                    registerMessage.textContent = 'Registration successful! You can now login.';
+                    setTimeout(() => {
+                        window.location.href = '/login.html';
+                    }, 1500);
+                } else {
+                    registerMessage.className = 'error-message';
+                    // Display specific errors if provided by the backend
+                    registerMessage.textContent = data.detail || JSON.stringify(data);
+                    console.error('Registration failed:', data);
+                }
+            } catch (error) {
+                console.error('Network error during registration:', error);
+                registerMessage.className = 'error-message';
+                registerMessage.textContent = 'An error occurred during registration.';
+            }
+        });
+        const API_BASE_URL = 'http://127.0.0.1:8000/api/'; // REPLACE!
+    </script>
+</body>
+</html>

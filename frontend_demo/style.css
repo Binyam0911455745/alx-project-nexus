@@ -1,0 +1,270 @@
+:root {
+    --primary-color: #007bff; /* Keep original primary blue */
+    --secondary-color: #6c757d;
+    --accent-color: #28a745;
+    --bg-color-fallback: #f8f9fa; /* Fallback if image fails */
+    --text-color: #343a40;
+    --card-bg: #ffffff;
+    --border-color: #dee2e6;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    line-height: 1.6;
+
+    /* --- BACKGROUND IMAGE ADDED HERE --- */
+    background-image: url('https://www.ena.et/documents/42142/0/2021_02_22222_jpg.jpg/98112c58-0ac1-939b-a7e4-c40374f5652c?version=1.0&t=1674388175746&download=true');
+    background-size: cover;       /* Cover the entire viewport */
+    background-position: center;  /* Center the image */
+    background-attachment: fixed; /* Keep image fixed on scroll */
+    background-color: var(--bg-color-fallback); /* Fallback solid color */
+    
+    /* Overlay to make text readable */
+    position: relative;
+    min-height: 100vh; /* Ensure it covers full height */
+    z-index: 0; /* Ensure overlay is above it */
+}
+
+/* Optional: Add a subtle overlay to improve text readability over the background image */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(248, 249, 250, 0.7); /* Light overlay */
+    /* background-color: rgba(0, 0, 0, 0.4); for dark overlay */
+    z-index: -1; /* Place it behind content but above background image */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 15px;
+    position: relative; /* For z-index context */
+    z-index: 1; /* Ensure content is above the overlay */
+}
+
+.navbar {
+    background-color: rgba(0, 123, 255, 0.9); /* Slightly transparent primary color for header */
+    color: white;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative; /* For z-index context */
+    z-index: 10; /* Ensure navbar is on top */
+}
+
+.navbar .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    display: flex; /* To align image and text */
+    align-items: center;
+}
+
+.navbar .logo img {
+    height: 40px; /* Adjust size as needed */
+    margin-right: 10px;
+    border-radius: 5px; /* Optional: slight border-radius for the logo */
+}
+
+.navbar nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    transition: color 0.3s ease;
+}
+
+.navbar nav a:hover {
+    color: var(--accent-color);
+}
+
+.navbar #user-info {
+    margin-left: 20px;
+    font-size: 0.9rem;
+}
+
+h1, h2, h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent card background */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    position: relative;
+    z-index: 2; /* Ensure cards are above the body overlay */
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.poll-card {
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent poll card background */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+}
+
+.poll-card h3 {
+    margin-top: 0;
+    font-size: 1.4rem;
+    color: var(--text-color);
+}
+
+.poll-card p {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    flex-grow: 1; /* Pushes button to bottom */
+}
+
+.poll-card .view-button {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.poll-card .view-button:hover {
+    background-color: #0056b3;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="datetime-local"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.btn {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #218838;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    color: #dc3545;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.success-message {
+    color: var(--accent-color);
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.poll-results {
+    margin-top: 20px;
+}
+
+.poll-results .choice-result {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.poll-results .choice-text {
+    flex-grow: 1;
+    font-weight: bold;
+}
+
+.poll-results .progress-bar-container {
+    width: 200px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+    height: 20px;
+    margin-left: 10px;
+    overflow: hidden;
+}
+
+.poll-results .progress-bar {
+    height: 100%;
+    background-color: var(--primary-color);
+    width: 0%; /* Will be set by JS */
+    border-radius: 5px;
+    text-align: right;
+    color: white;
+    font-size: 0.8rem;
+    line-height: 20px;
+    padding-right: 5px;
+    box-sizing: border-box;
+    transition: width 0.5s ease;
+}
+
+.poll-results .vote-count {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    background-color: rgba(0, 123, 255, 0.9); /* Slightly transparent primary color for footer */
+    color: white;
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 10;
+}
