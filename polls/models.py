@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User # For user authentication
+# Implement the Vote API (POST). Implement logic to prevent duplicate voting (e.g., based on user ID or IP, for simplicity).
 
 class Poll(models.Model):
     question = models.CharField(max_length=200)
